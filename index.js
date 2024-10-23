@@ -78,7 +78,6 @@ app.delete('/api/persons/:id', (request, response )=>{
 
   app.post('/api/persons/', (request, response ) =>{
     const body = request.body
-    console.log(body)
     if(body.name && body.number){
       if(persons.find(person => person.name === body.name )){
         response.status(409).send({error: "Name must be unique"})
@@ -93,6 +92,17 @@ app.delete('/api/persons/:id', (request, response )=>{
     }else{
       response.status(400).send({error: "Name or number is missing"})
     }
+  })
+
+  app.put('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    const body = request.body
+    const existingPerson = persons.find(person=>person.name.toLowerCase() === body.name.toLowerCase())
+    existingPerson = [{...existingPerson, number: body.number}]
+    persons = persons.filter(person => person.id !== id)
+    persons = [...persons, existingPerson]
+    response.status(200).send(existingPerson)
+
   })
 
 const PORT = process.env.PORT || 3001
