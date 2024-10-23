@@ -5,6 +5,7 @@ const cors = require('cors')
 
 
 
+
 let persons = [
     { 
       "id": 1,
@@ -32,6 +33,7 @@ let persons = [
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use(express.static('dist'))
 
 morgan.token('body', (req) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : ''; // Solo incluir el cuerpo en POST
